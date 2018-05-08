@@ -8,6 +8,7 @@ from statsmodels.tsa.stattools import adfuller
 
 rcParams['figure.figsize'] = 15, 6
 
+# Set the plot's window title.
 def set_window_title(window_title):
     fig = plt.figure(0)
     fig.canvas.set_window_title(window_title)
