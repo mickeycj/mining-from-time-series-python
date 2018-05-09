@@ -42,7 +42,7 @@ date_parser = lambda dates: pd.datetime.strptime(dates, '%Y-%m')
 data = pd.read_csv('AirPassengers.csv', parse_dates=['Month'], index_col='Month', date_parser=date_parser)
 time_series = data['#Passengers']
 
-# Plot the time series
+# Plot the time series.
 set_window_title('Air Passengers Time Series')
 plt.plot(time_series, color='blue')
 plt.show()
@@ -76,7 +76,7 @@ predictions_log = pd.Series(time_series_log.ix[0], index=time_series_log.index)
 predictions_log = predictions_log.add(predictions_diff_cumsum, fill_value=0)
 predictions = np.exp(predictions_log)
 
-# Plot the predicited time series in the original scale.
+# Plot the predicted time series in the original scale.
 set_window_title('Predicted Time Series - Original Scale')
 plt.title('RMSE: %.4f' % np.sqrt(sum((predictions - time_series)**2) / len(time_series)))
 plt.plot(time_series, color='blue')
