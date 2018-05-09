@@ -31,10 +31,10 @@ def test_stationarity(time_series, window_title):
     fig = plt.figure(0)
     fig.canvas.set_window_title(window_title)
     plt.title('Rolling Mean & Standard Deviation')
-    plt.legend(loc='best')
     plt.plot(time_series, color='blue', label='Original')
     plt.plot(rolling_mean, color='red', label='Rolling Mean')
     plt.plot(rolling_std, color='black', label='Rollding Std')
+    plt.legend(loc='best')
     plt.show()
 
 # Load the dataset from CSV file.
