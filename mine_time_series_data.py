@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 from matplotlib.pylab import rcParams
 from statsmodels.tsa.arima_model import ARIMA
-from statsmodels.tsa.stattools import adfuller
 
 rcParams['figure.figsize'] = 15, 6
 
@@ -13,19 +12,11 @@ def set_window_title(window_title):
     fig.canvas.set_window_title(window_title)
 
 # Test the stationarity of the time series.
-def test_stationarity(time_series, window_title):
+def show_statistics(time_series, window_title):
     # Create the test statistics.
     dataframe = pd.DataFrame(time_series)
     rolling_mean = dataframe.rolling(window=12, center=False).mean()
     rolling_std = dataframe.rolling(window=12, center=False).std()
-    df_test = adfuller(time_series, autolag='AIC')
-    df_output = pd.Series(df_test[0:4], index=['Test Statistic', 'p-value', '#Lags Used', 'Number of Observations Used'])
-    for key, value in df_test[4].items():
-        df_output['Critical Value (%s)' % key] = value
-
-    # Show the result of Dickey-Fuller Test.
-    print('Results of Dicky-Fuller Test:')
-    print(df_output)
 
     # Plot the statistics.
     fig = plt.figure(0)
@@ -47,16 +38,16 @@ set_window_title('Air Passengers Time Series')
 plt.plot(time_series, color='blue')
 plt.show()
 
-# Plot the raw data's Dickey-Fuller test.
-test_stationarity(time_series, 'Original Time Series Statistics')
+# Plot the raw data's test statistics.
+show_statistics(time_series, 'Original Time Series Statistics')
 
 # Take the difference of the time series.
 time_series_log = np.log(time_series)
 time_series_log_diff = time_series_log - time_series_log.shift()
 time_series_log_diff.dropna(inplace=True)
 
-# Plot the pre-processed data's Dickey-Fuller test.
-test_stationarity(time_series_log_diff, 'Pre-processed Time Series Statistics')
+# Plot the pre-processed data's test statistics.
+show_statistics(time_series_log_diff, 'Pre-processed Time Series Statistics')
 
 # Create ARIMA model.
 model = ARIMA(time_series_log, order=(2, 1, 2))
