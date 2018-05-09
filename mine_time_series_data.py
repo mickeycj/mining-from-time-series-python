@@ -18,7 +18,7 @@ def show_statistics(time_series, window_title):
     rolling_mean = dataframe.rolling(window=12, center=False).mean()
     rolling_std = dataframe.rolling(window=12, center=False).std()
 
-    # Plot the statistics.
+    # Plot the test statistics.
     fig = plt.figure(0)
     fig.canvas.set_window_title(window_title)
     plt.title('Rolling Mean & Standard Deviation')
@@ -39,7 +39,7 @@ plt.plot(time_series, color='blue', label='#Passengers')
 plt.legend(loc='upper left')
 plt.show()
 
-# Plot the raw data's test statistics.
+# Plot the raw time series' test statistics.
 show_statistics(time_series, 'Original Time Series Statistics')
 
 # Take the difference of the time series.
@@ -62,7 +62,7 @@ plt.plot(time_series_log_diff, color='blue', label='Time Series Log Difference')
 plt.legend(loc='upper left')
 plt.show()
 
-# Plot the pre-processed data's test statistics.
+# Plot the pre-processed time series' test statistics.
 show_statistics(time_series_log_diff, 'Pre-processed Time Series Statistics')
 
 # Create ARIMA model.
@@ -77,7 +77,7 @@ plt.plot(results.fittedvalues, color='red', label='Predictions')
 plt.legend(loc='upper left')
 plt.show()
 
-# Convert the predicted times series back to the original scale.
+# Convert the predicted time series back to the original scale.
 predictions_diff = pd.Series(results.fittedvalues, copy=True)
 predictions_diff_cumsum = predictions_diff.cumsum()
 predictions_log = pd.Series(time_series_log.ix[0], index=time_series_log.index)
