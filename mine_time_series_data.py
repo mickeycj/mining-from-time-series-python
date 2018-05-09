@@ -25,7 +25,7 @@ def show_statistics(time_series, window_title):
     plt.plot(time_series, color='blue', label='Original')
     plt.plot(rolling_mean, color='red', label='Rolling Mean')
     plt.plot(rolling_std, color='black', label='Rollding Std')
-    plt.legend(loc='best')
+    plt.legend(loc='upper left')
     plt.show()
 
 # Load the dataset from CSV file.
@@ -35,7 +35,8 @@ time_series = data['#Passengers']
 
 # Plot the time series.
 set_window_title('Air Passengers Time Series')
-plt.plot(time_series, color='blue')
+plt.plot(time_series, color='blue', label='#Passengers')
+plt.legend(loc='upper left')
 plt.show()
 
 # Plot the raw data's test statistics.
@@ -43,8 +44,23 @@ show_statistics(time_series, 'Original Time Series Statistics')
 
 # Take the difference of the time series.
 time_series_log = np.log(time_series)
-time_series_log_diff = time_series_log - time_series_log.shift()
+time_series_log_shift = time_series_log.shift()
+time_series_log_diff = time_series_log - time_series_log_shift
 time_series_log_diff.dropna(inplace=True)
+
+# Plot the difference compared to original data.
+set_window_title('Pre-processing - Differencing')
+plt.title('Time Series Differencing')
+plt.subplot(311)
+plt.plot(time_series_log, color='blue', label='Time Series Log')
+plt.legend(loc='upper left')
+plt.subplot(312)
+plt.plot(time_series_log_shift, color='blue', label='Time Series Log Shift')
+plt.legend(loc='upper left')
+plt.subplot(313)
+plt.plot(time_series_log_diff, color='blue', label='Time Series Log Difference')
+plt.legend(loc='upper left')
+plt.show()
 
 # Plot the pre-processed data's test statistics.
 show_statistics(time_series_log_diff, 'Pre-processed Time Series Statistics')
@@ -56,8 +72,9 @@ results = model.fit(disp=-1)
 # Plot the predicted time series.
 set_window_title('Predicted Time Series')
 plt.title('RSS: %.4f' % sum((results.fittedvalues - time_series_log_diff)**2))
-plt.plot(time_series_log_diff, color='blue')
-plt.plot(results.fittedvalues, color='red')
+plt.plot(time_series_log_diff, color='blue', label='Time Series Log Difference')
+plt.plot(results.fittedvalues, color='red', label='Predictions')
+plt.legend(loc='upper left')
 plt.show()
 
 # Convert the predicted times series back to the original scale.
@@ -70,6 +87,7 @@ predictions = np.exp(predictions_log)
 # Plot the predicted time series in the original scale.
 set_window_title('Predicted Time Series - Original Scale')
 plt.title('RMSE: %.4f' % np.sqrt(sum((predictions - time_series)**2) / len(time_series)))
-plt.plot(time_series, color='blue')
-plt.plot(predictions, color='red')
+plt.plot(time_series, color='blue', label='Original Time Series')
+plt.plot(predictions, color='red', label='Predictions')
+plt.legend(loc='upper left')
 plt.show()
